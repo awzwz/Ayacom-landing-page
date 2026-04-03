@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
@@ -35,15 +36,46 @@ def init_db() -> None:
         )
 
 
+def _cors_origins() -> list[str]:
+    """Локальная разработка + домены из CORS_ORIGINS (через запятую)."""
+    defaults = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+    raw = os.environ.get("CORS_ORIGINS", "").strip()
+    if not raw:
+        return defaults
+    extra = [o.strip().rstrip("/") for o in raw.split(",") if o.strip()]
+    seen: set[str] = set()
+    merged: list[str] = []
+    for o in defaults + extra:
+        if o not in seen:
+            seen.add(o)
+            merged.append(o)
+    return merged
+
+
+def _cors_origin_regex() -> str | None:
+    """
+    По умолчанию разрешаем любой хост *.vercel.app (прод и превью).
+    Отключить: CORS_ORIGIN_REGEX=0
+    Свой шаблон: CORS_ORIGIN_REGEX=https://.*\\.example\\.com
+    """
+    r = os.environ.get("CORS_ORIGIN_REGEX", "").strip()
+    if r.lower() in ("0", "false", "off", "none", "disable"):
+        return None
+    if r:
+        return r
+    return r"https://.*\.vercel\.app"
+
+
 app = FastAPI(title="IS UTO API", version="1.0.0")
 init_db()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=_cors_origins(),
+    allow_origin_regex=_cors_origin_regex(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

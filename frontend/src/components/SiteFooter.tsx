@@ -37,14 +37,14 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link
+              <a
                 href={`${API_BASE}/docs`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white"
               >
                 API
-              </Link>
+              </a>
             </li>
           </ul>
         </div>

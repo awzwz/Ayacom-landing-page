@@ -1,7 +1,6 @@
 "use client";
 
 import { BarChart3, BookOpen, Gem, Radio } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { API_BASE } from "@/lib/config";
 
@@ -101,14 +100,14 @@ export function TechStackSection() {
               создания единой экосистемы.
             </p>
           </div>
-          <Link
+          <a
             href={`${API_BASE}/docs`}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 text-sm font-bold text-[#0a1a33] hover:text-[#132a4d]"
           >
             API Documentation →
-          </Link>
+          </a>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
