@@ -44,9 +44,9 @@ export default function Home() {
               <a className={getNavLinkClass("contact")} href="#contact">Контакты</a>
             </div>
           </div>
-          <button className="bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary-container transition-all">
+          <a href="https://ayacom.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary-container transition-all">
             Создать маршрут
-          </button>
+          </a>
         </div>
       </nav>
 
@@ -70,10 +70,10 @@ export default function Home() {
               Интеллектуальная система маршрутизации спецтехники на базе реального дорожного графа. Снижение холостого пробега до 25%.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="bg-tertiary-fixed-dim text-on-tertiary-fixed font-bold px-8 py-4 rounded-md shadow-lg hover:brightness-110 transition-all flex items-center gap-3">
+              <a href="https://ayacom.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-tertiary-fixed-dim text-on-tertiary-fixed font-bold px-8 py-4 rounded-md shadow-lg hover:brightness-110 transition-all flex items-center gap-3">
                 Попробовать демо
                 <span className="material-symbols-outlined">arrow_forward</span>
-              </button>
+              </a>
               <button className="bg-surface-container-low/10 backdrop-blur-md border border-surface-container-lowest/20 text-surface-container-lowest font-semibold px-8 py-4 rounded-md hover:bg-surface-container-low/20 transition-all">
                 Как это работает
               </button>
