@@ -38,7 +38,7 @@ export function SiteFooter() {
             </li>
             <li>
               <a
-                href={`${API_BASE}/docs`}
+                href="https://ayacom-production.up.railway.app/redoc"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white"
@@ -53,7 +53,7 @@ export function SiteFooter() {
           <p className="mt-4 text-sm leading-relaxed text-white/70">
             г. Астана, ул. Достык 12
             <br />
-            +7 (700) 123-45-67
+            +7 705 478 15 52
           </p>
         </div>
       </div>

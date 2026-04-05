@@ -339,7 +339,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <span className="font-['Inter'] text-xs font-bold text-[#e9c176] uppercase tracking-wider mb-2">Контакты</span>
             <p className="font-['Inter'] text-xs text-[#faf9fb] opacity-60">г. Астана, ул. Достык 12</p>
-            <p className="font-['Inter'] text-xs text-[#faf9fb] opacity-60">+7 (700) 123-45-67</p>
+            <p className="font-['Inter'] text-xs text-[#faf9fb] opacity-60">+7 705 478 15 52</p>
           </div>
         </div>
       </footer>
