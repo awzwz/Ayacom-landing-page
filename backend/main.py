@@ -1,6 +1,7 @@
 import os
 import sqlite3
 from contextlib import contextmanager
+from typing import Optional
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -55,7 +56,7 @@ def _cors_origins() -> list[str]:
     return merged
 
 
-def _cors_origin_regex() -> str | None:
+def _cors_origin_regex() -> Optional[str]:
     """
     По умолчанию разрешаем любой хост *.vercel.app (прод и превью).
     Отключить: CORS_ORIGIN_REGEX=0
