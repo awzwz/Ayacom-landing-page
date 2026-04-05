@@ -17,12 +17,12 @@ export function SiteFooter() {
           <p className={`text-xs font-bold uppercase tracking-wider ${gold}`}>Навигация</p>
           <ul className="mt-4 space-y-2 text-sm text-white/70">
             <li>
-              <Link href="#" className="hover:text-white">
+              <Link href="/privacy" className="hover:text-white">
                 Конфиденциальность
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:text-white">
+              <Link href="/terms" className="hover:text-white">
                 Условия использования
               </Link>
             </li>
