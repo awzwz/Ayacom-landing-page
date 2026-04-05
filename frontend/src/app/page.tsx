@@ -221,7 +221,9 @@ export default function Home() {
               <div className="w-12 h-12 bg-primary-container/10 flex items-center justify-center text-primary-container mb-6 group-hover:scale-110 transition-transform rounded-full">
                 <span className="material-symbols-outlined">api</span>
               </div>
-              <h4 className="text-lg font-bold text-primary mb-3">REST API</h4>
+              <a href="https://ayacom-production.up.railway.app/redoc" target="_blank" rel="noopener noreferrer" className="hover:text-tertiary-fixed transition-colors">
+                <h4 className="text-lg font-bold text-primary mb-3">REST API</h4>
+              </a>
               <p className="text-sm text-secondary leading-relaxed">
                 Гибкие возможности интеграции с SAP, 1C и внутренними системами управления ресурсами заказчика.
               </p>

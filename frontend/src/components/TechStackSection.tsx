@@ -101,7 +101,7 @@ export function TechStackSection() {
             </p>
           </div>
           <a
-            href={`${API_BASE}/docs`}
+            href="https://ayacom-production.up.railway.app/redoc"
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 text-sm font-bold text-[#0a1a33] hover:text-[#132a4d]"
