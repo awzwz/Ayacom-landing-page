@@ -111,7 +111,7 @@ export default function Home() {
                 Попробовать демо
                 <span className="material-symbols-outlined">arrow_forward</span>
               </a>
-              <a href="https://ayacom.vercel.app/support" target="_blank" rel="noopener noreferrer" className="bg-surface-container-low/10 backdrop-blur-md border border-surface-container-lowest/20 text-surface-container-lowest font-semibold px-8 py-4 rounded-md hover:bg-surface-container-low/20 transition-all">
+              <a href="#solutions" className="bg-surface-container-low/10 backdrop-blur-md border border-surface-container-lowest/20 text-surface-container-lowest font-semibold px-8 py-4 rounded-md hover:bg-surface-container-low/20 transition-all">
                 Как это работает
               </a>
             </div>
@@ -167,6 +167,10 @@ export default function Home() {
           transition={{ duration: 0.7, ease: "easeOut" }} 
           className="container mx-auto"
         >
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-primary mb-4 tracking-tight">Как это работает</h2>
+            <p className="text-secondary text-lg max-w-2xl mx-auto">Интеллектуальная оптимизация на каждом этапе: от приема заявки до завершения маршрута.</p>
+          </div>
           <div className="grid md:grid-cols-3 gap-0 rounded-xl overflow-hidden shadow-sm border border-surface-container-low">
             <div className="bg-surface-container-highest p-12 flex flex-col justify-between">
               <div>
@@ -176,8 +180,9 @@ export default function Home() {
                   Традиционные методы приводят к задержкам до 40 минут на каждой заявке. Диспетчеры тратят ценное время на выбор техники, часто допуская ошибки в ETA.
                 </p>
               </div>
-              <div className="mt-8 pt-8 border-t border-outline-variant/30">
+              <div className="mt-8 pt-8 border-t border-outline-variant/30 flex justify-between items-center">
                 <p className="text-xs font-label text-error uppercase tracking-widest font-bold">Проблема №1</p>
+                <span className="text-xs font-bold text-outline opacity-50 px-2 py-1 border border-outline/20 rounded">ЭТАП 1</span>
               </div>
             </div>
             <div className="bg-primary text-on-primary p-12 flex flex-col justify-between transform md:scale-105 shadow-2xl z-10 transition-transform hover:scale-110">
@@ -188,8 +193,9 @@ export default function Home() {
                   Алгоритм мгновенно анализирует весь доступный флот. Учитываются текущие координаты, тип спецтехники и приоритет заявки для автоматического назначения.
                 </p>
               </div>
-              <div className="mt-8 pt-8 border-t border-primary-container">
+              <div className="mt-8 pt-8 border-t border-primary-container flex justify-between items-center">
                 <p className="text-xs font-label text-tertiary-fixed uppercase tracking-widest font-bold">Наше решение</p>
+                <span className="text-xs font-bold text-tertiary-fixed-dim px-2 py-1 border border-tertiary-fixed/30 rounded">ЭТАП 2</span>
               </div>
             </div>
             <div className="bg-surface-container-highest p-12 flex flex-col justify-between">
@@ -200,8 +206,9 @@ export default function Home() {
                   Система создает multi-stop маршруты, исключая холостые пробеги. Достигается максимальная загрузка флота за счет умного группирования задач.
                 </p>
               </div>
-              <div className="mt-8 pt-8 border-t border-outline-variant/30">
+              <div className="mt-8 pt-8 border-t border-outline-variant/30 flex justify-between items-center">
                 <p className="text-xs font-label text-on-primary-container uppercase tracking-widest font-bold">Результат</p>
+                <span className="text-xs font-bold text-outline opacity-50 px-2 py-1 border border-outline/20 rounded">ЭТАП 3</span>
               </div>
             </div>
           </div>
