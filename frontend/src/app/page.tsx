@@ -331,7 +331,7 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-4">
             <span className="font-['Inter'] text-xs font-bold text-[#e9c176] uppercase tracking-wider mb-2">Ресурсы</span>
-            <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="#">Поддержка</a>
+            <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="https://ayacom.vercel.app/support" target="_blank" rel="noopener noreferrer">Поддержка</a>
             <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="https://ayacom-production.up.railway.app/redoc" target="_blank" rel="noopener noreferrer">API</a>
           </div>
           <div className="flex flex-col gap-4">
