@@ -186,7 +186,7 @@ export default function Home() {
               <p className="text-secondary text-lg">Мы объединили передовые разработки в области картографии и интернета вещей для создания единой экосистемы.</p>
             </div>
             <div className="text-right">
-              <p className="text-sm font-label text-primary font-bold hover:text-tertiary-fixed cursor-pointer transition-colors">API Documentation →</p>
+              <a href="https://ayacom-production.up.railway.app/redoc" target="_blank" rel="noopener noreferrer" className="text-sm font-label text-primary font-bold hover:text-tertiary-fixed cursor-pointer transition-colors block">API Documentation →</a>
             </div>
           </div>
           <div className="grid md:grid-cols-4 gap-8">
@@ -332,7 +332,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <span className="font-['Inter'] text-xs font-bold text-[#e9c176] uppercase tracking-wider mb-2">Ресурсы</span>
             <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="#">Поддержка</a>
-            <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="#">API</a>
+            <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="https://ayacom-production.up.railway.app/redoc" target="_blank" rel="noopener noreferrer">API</a>
           </div>
           <div className="flex flex-col gap-4">
             <span className="font-['Inter'] text-xs font-bold text-[#e9c176] uppercase tracking-wider mb-2">Контакты</span>
