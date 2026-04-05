@@ -90,7 +90,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-[921px] flex items-center bg-primary overflow-hidden">
         <div className="absolute inset-0 opacity-40">
-          <img alt="Oil field logistics map" className="w-full h-full object-cover mix-blend-overlay opacity-50" src="/hero-bg.png" />
+          <img alt="Oil field logistics map" className="w-full h-full object-cover mix-blend-overlay" data-alt="Technical blueprint map of an industrial complex overlaid with glowing GPS logistics route lines and data points" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCSZmUIoVQHkdoFS8BJCT7HXp8JfeaFyG0vdDtKYFyuY91s-Eg9aN-bhJbko0mNwrqTOfEfLrsH0fQMTyZJGZtWpmsKgyyKy6eSrRKG1q5nIX0HIKAVBeCNd254JKZ_NDE51Gzfq6keg-bl20RonmhW_Weujzi-MUYQOmI3MzoKFBLa_ubf0SyXFbrLAjb79YO7Z5HHIFyEwtTKqLZRPrjrWmLabDzOw4WlP0YalwrIR--BypBlsFHRTHa_Dz9SPis62sKcPWNzfg" />
         </div>
         <div className="container mx-auto px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center">
           <motion.div 
@@ -331,7 +331,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="mt-12 rounded-xl overflow-hidden">
-                <img alt="Contact decoration" className="w-full h-auto scale-105" src="/contact-decoration.png" />
+                <img alt="Contact decoration" className="w-full h-auto scale-105" data-alt="Abstract minimalist background with clean geometric lines in soft blue and grey tones reflecting enterprise technology" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyoK0535GhRsi91yUZXKLp_a0qgAw-NsWsIndVO-LBWb_hAGy0gCcaghVienvRtqtEs8qRFJoEXmJUSNYxkQhTc4x8zjSRqYhX3O2qSrwNWH4EoANnJNP_Cq-xXOg7XGW1zCJffKvmLy5yrdqujmJATBP2Uyx8bExnissjADz72V8PHpcErxHuQ5ZnGMZzGCFQBxHB-JcepRqIHAoaXoqKCHnhkZYkLxTJb9aApOJe4O81Rw7I6yw3YE0jeRoiFCU8y_T8YVpXsk0" />
               </div>
             </div>
             <div className="p-12">
