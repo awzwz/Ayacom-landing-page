@@ -21,7 +21,7 @@ export default function TermsPage() {
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-8 tracking-tight font-headline">Условия использования</h1>
-          <p className="text-sm opacity-60 mb-12 uppercase tracking-widest">Последнее обновление: 5 апреля 2024 г.</p>
+          <p className="text-sm opacity-60 mb-12 uppercase tracking-widest">Последнее обновление: 5 апреля 2026 г.</p>
 
           <div className="space-y-12 text-lg leading-relaxed opacity-90 text-justify">
             <section>
@@ -77,7 +77,7 @@ export default function TermsPage() {
       <footer className="w-full py-12 bg-[#000000] border-t border-[#002d5b] mt-20">
         <div className="max-w-7xl mx-auto px-12 text-center">
           <p className="text-xs uppercase tracking-wider text-[#faf9fb] opacity-60">
-            © 2024 IS UTO Intelligent Vehicle Routing. Все права защищены.
+            © 2026 IS UTO Intelligent Vehicle Routing. Все права защищены.
           </p>
         </div>
       </footer>

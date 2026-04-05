@@ -397,7 +397,7 @@ export default function Home() {
           <div>
             <span className="font-['JetBrains_Mono'] text-lg text-[#faf9fb] block mb-6 font-bold">IS UTO</span>
             <p className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60">
-              © 2024 IS UTO Intelligent Vehicle Routing.<br/>Все права защищены.
+              © 2026 IS UTO Intelligent Vehicle Routing.<br/>Все права защищены.
             </p>
           </div>
           <div className="flex flex-col gap-4">
