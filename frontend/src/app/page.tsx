@@ -74,9 +74,9 @@ export default function Home() {
                 Попробовать демо
                 <span className="material-symbols-outlined">arrow_forward</span>
               </a>
-              <button className="bg-surface-container-low/10 backdrop-blur-md border border-surface-container-lowest/20 text-surface-container-lowest font-semibold px-8 py-4 rounded-md hover:bg-surface-container-low/20 transition-all">
+              <a href="https://ayacom.vercel.app/support" target="_blank" rel="noopener noreferrer" className="bg-surface-container-low/10 backdrop-blur-md border border-surface-container-lowest/20 text-surface-container-lowest font-semibold px-8 py-4 rounded-md hover:bg-surface-container-low/20 transition-all">
                 Как это работает
-              </button>
+              </a>
             </div>
           </motion.div>
           <motion.div 
