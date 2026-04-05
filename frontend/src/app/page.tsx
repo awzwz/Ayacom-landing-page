@@ -5,6 +5,42 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("");
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "err">("idle");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      const res = await fetch("https://ayacom-production.up.railway.app/api/v1/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, company, email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setStatus("err");
+        setMessage(data.detail || "Произошла ошибка при отправке.");
+        return;
+      }
+
+      setStatus("ok");
+      setMessage(data.message || "Заявка успешно отправлена!");
+      setName("");
+      setCompany("");
+      setEmail("");
+    } catch (error) {
+      setStatus("err");
+      setMessage("Не удалось связаться с сервером. Попробуйте позже.");
+    }
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -291,23 +327,53 @@ export default function Home() {
               </div>
             </div>
             <div className="p-12">
-              <form className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Имя</label>
-                  <input className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" placeholder="Иван Иванов" type="text" />
+                  <input 
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" 
+                    placeholder="Иван Иванов" 
+                    type="text" 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Компания</label>
-                  <input className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" placeholder="ООО Логистика-Плюс" type="text" />
+                  <input 
+                    required
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" 
+                    placeholder="ООО Логистика-Плюс" 
+                    type="text" 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Email</label>
-                  <input className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" placeholder="ivan@company.ru" type="email" />
+                  <input 
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" 
+                    placeholder="ivan@company.ru" 
+                    type="email" 
+                  />
                 </div>
-                <button className="w-full bg-primary text-on-primary font-bold py-5 rounded-md hover:brightness-125 transition-all shadow-lg flex items-center justify-center gap-3 mt-4 active:scale-[0.98]" type="submit">
-                  Запросить демонстрацию
+                <button 
+                  disabled={status === "loading"}
+                  className="w-full bg-primary text-on-primary font-bold py-5 rounded-md hover:brightness-125 transition-all shadow-lg flex items-center justify-center gap-3 mt-4 active:scale-[0.98] disabled:opacity-50" 
+                  type="submit"
+                >
+                  {status === "loading" ? "Отправка..." : "Запросить демонстрацию"}
                   <span className="material-symbols-outlined">send</span>
                 </button>
+                {message && (
+                  <p className={`text-xs text-center mt-4 ${status === "ok" ? "text-green-500" : "text-red-500"}`}>
+                    {message}
+                  </p>
+                )}
                 <p className="text-[10px] text-center text-secondary leading-relaxed mt-4">
                   Нажимая кнопку, вы соглашаетесь на обработку персональных данных в соответствии с политикой конфиденциальности.
                 </p>
