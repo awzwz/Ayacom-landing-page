@@ -1,47 +1,22 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("");
-  const [name, setName] = useState("");
-  const [company, setCompany] = useState("");
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "err">("idle");
-  const [message, setMessage] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("loading");
-    setMessage("");
-
-    try {
-      const res = await fetch("https://ayacom-production.up.railway.app/api/v1/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, company, email }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setStatus("err");
-        setMessage(data.detail || "Произошла ошибка при отправке.");
-        return;
-      }
-
-      setStatus("ok");
-      setMessage(data.message || "Заявка успешно отправлена!");
-      setName("");
-      setCompany("");
-      setEmail("");
-    } catch (error) {
-      setStatus("err");
-      setMessage("Не удалось связаться с сервером. Попробуйте позже.");
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
     }
-  };
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,74 +30,140 @@ export default function Home() {
       { threshold: 0.5 }
     );
 
-    const sections = document.querySelectorAll("section[id]");
+    const sections = document.querySelectorAll("section[id], #contacts");
     sections.forEach((section) => observer.observe(section));
 
     return () => sections.forEach((section) => observer.unobserve(section));
   }, []);
 
-  const getNavLinkClass = (id: string) => {
-    return activeSection === id
-      ? "font-['Inter'] font-medium text-sm text-[#e9c176] border-b-2 border-[#e9c176] pb-1 hover:opacity-100 transition-colors"
-      : "font-['Inter'] font-medium text-sm text-[#1b1c1e] dark:text-[#faf9fb] opacity-80 hover:opacity-100 hover:text-[#e9c176] transition-colors";
+  const getNavLinkClass = (id: string, mobile = false) => {
+    const base = mobile
+      ? "block py-3 px-2 text-base font-medium rounded-lg active:bg-black/5"
+      : "font-['Inter'] font-medium text-sm pb-1 transition-colors";
+    if (activeSection === id) {
+      return mobile
+        ? `${base} text-[#b8860b] bg-black/[0.04]`
+        : `${base} text-[#e9c176] border-b-2 border-[#e9c176] hover:opacity-100`;
+    }
+    return mobile
+      ? `${base} text-[#1b1c1e] dark:text-[#faf9fb]`
+      : `${base} text-[#1b1c1e] dark:text-[#faf9fb] opacity-80 hover:opacity-100 hover:text-[#e9c176]`;
   };
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <div className="bg-background text-on-background font-body selection:bg-tertiary-fixed selection:text-on-tertiary-fixed w-full">
+    <div className="bg-background text-on-background font-body selection:bg-tertiary-fixed selection:text-on-tertiary-fixed w-full overflow-x-hidden">
       {/* Top Navigation Bar */}
-      <nav className="sticky top-0 w-full z-[100] bg-[#faf9fb] dark:bg-[#000000] shadow-sm dark:shadow-none transition-all duration-300 ease-in-out">
-        <div className="flex justify-between items-center px-8 py-4 max-w-full mx-auto">
-          <div className="flex items-center gap-8">
-            <span className="text-xl font-bold tracking-tight text-[#000000] dark:text-[#faf9fb] font-headline">IS UTO</span>
-            <div className="hidden md:flex gap-6 items-center">
-              <a className={getNavLinkClass("features")} href="#features">Преимущества</a>
-              <a className={getNavLinkClass("solutions")} href="#solutions">Решения</a>
-              <a className={getNavLinkClass("analytics")} href="#analytics">Аналитика</a>
-              <a className={getNavLinkClass("contact")} href="#contact">Контакты</a>
-            </div>
+      <nav
+        className="sticky top-0 z-[100] w-full border-b border-black/5 bg-[#faf9fb]/95 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-[#000000]/95 dark:shadow-none supports-[padding:max(0px)]:pt-[max(0.5rem,env(safe-area-inset-top))]"
+        style={{ paddingLeft: "max(1rem, env(safe-area-inset-left))", paddingRight: "max(1rem, env(safe-area-inset-right))" }}
+      >
+        <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-2 py-3 sm:py-4">
+          <span className="shrink-0 text-lg font-bold tracking-tight text-[#000000] dark:text-[#faf9fb] font-headline sm:text-xl">
+            IS UTO
+          </span>
+          <div className="hidden items-center gap-5 md:flex lg:gap-6">
+            <a className={getNavLinkClass("features")} href="#features">
+              Преимущества
+            </a>
+            <a className={getNavLinkClass("solutions")} href="#solutions">
+              Решения
+            </a>
+            <a className={getNavLinkClass("analytics")} href="#analytics">
+              Аналитика
+            </a>
+            <a className={getNavLinkClass("contacts")} href="#contacts">
+              Контакты
+            </a>
           </div>
-          <a href="https://ayacom.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-primary text-on-primary px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary-container transition-all">
-            Создать маршрут
-          </a>
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <a
+              href="https://ayacom.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 min-w-0 items-center justify-center rounded-lg bg-primary px-3 py-2.5 text-xs font-semibold text-on-primary transition-all hover:bg-primary-container sm:px-5 sm:text-sm"
+            >
+              <span className="max-[380px]:hidden">Создать маршрут</span>
+              <span className="hidden max-[380px]:inline">Маршрут</span>
+            </a>
+            <button
+              type="button"
+              className="flex min-h-11 min-w-11 items-center justify-center rounded-lg text-[#000000] md:hidden dark:text-[#faf9fb]"
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              <span className="material-symbols-outlined text-2xl">{menuOpen ? "close" : "menu"}</span>
+            </button>
+          </div>
         </div>
+        {menuOpen ? (
+          <div className="border-t border-black/10 px-2 py-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] md:hidden dark:border-white/10">
+            <a className={getNavLinkClass("features", true)} href="#features" onClick={closeMenu}>
+              Преимущества
+            </a>
+            <a className={getNavLinkClass("solutions", true)} href="#solutions" onClick={closeMenu}>
+              Решения
+            </a>
+            <a className={getNavLinkClass("analytics", true)} href="#analytics" onClick={closeMenu}>
+              Аналитика
+            </a>
+            <a className={getNavLinkClass("contacts", true)} href="#contacts" onClick={closeMenu}>
+              Контакты
+            </a>
+          </div>
+        ) : null}
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-[921px] flex items-center bg-primary overflow-hidden">
+      <section className="relative flex min-h-[100svh] items-center overflow-hidden bg-primary py-12 sm:py-16 md:min-h-0 md:py-20 lg:min-h-[min(100vh,921px)]">
         <div className="absolute inset-0 opacity-40">
-          <img alt="Oil field logistics map" className="w-full h-full object-cover mix-blend-overlay opacity-50" src="/hero-bg.png" />
+          <img
+            alt="Oil field logistics map"
+            className="h-full w-full object-cover mix-blend-overlay opacity-50"
+            src="/hero-bg.png"
+          />
         </div>
-        <div className="container mx-auto px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }} 
-            animate={{ opacity: 1, x: 0 }} 
-            transition={{ duration: 0.8, ease: "easeOut" }} 
+        <div className="relative z-10 mx-auto grid w-full max-w-[1400px] items-center gap-8 px-4 sm:px-6 md:grid-cols-2 md:gap-12 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-2xl"
           >
-
-            <h1 className="text-5xl md:text-7xl font-bold text-surface-container-lowest leading-[1.1] mb-6 tracking-tight">
+            <h1 className="mb-5 text-[1.65rem] font-bold leading-[1.15] tracking-tight text-surface-container-lowest sm:text-3xl md:mb-6 md:text-4xl md:leading-[1.1] lg:text-5xl xl:text-6xl 2xl:text-7xl">
               Оптимизируйте логистику месторождений с ИИ
             </h1>
-            <p className="text-xl text-primary-fixed leading-relaxed mb-10 opacity-90 max-w-xl">
-              Интеллектуальная система маршрутизации спецтехники на базе реального дорожного графа. Снижение холостого пробега до 25%.
+            <p className="mb-8 max-w-xl text-base leading-relaxed text-primary-fixed opacity-90 sm:text-lg md:mb-10 md:text-xl">
+              Интеллектуальная система маршрутизации спецтехники на базе реального дорожного графа. Снижение
+              холостого пробега до 25%.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <a href="https://ayacom.vercel.app" target="_blank" rel="noopener noreferrer" className="bg-tertiary-fixed-dim text-on-tertiary-fixed font-bold px-8 py-4 rounded-md shadow-lg hover:brightness-110 transition-all flex items-center gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+              <a
+                href="https://ayacom.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-tertiary-fixed-dim px-6 py-3.5 text-center text-sm font-bold text-on-tertiary-fixed shadow-lg transition-all hover:brightness-110 sm:px-8 sm:py-4 sm:text-base"
+              >
                 Попробовать демо
-                <span className="material-symbols-outlined">arrow_forward</span>
+                <span className="material-symbols-outlined shrink-0">arrow_forward</span>
               </a>
-              <a href="#solutions" className="bg-surface-container-low/10 backdrop-blur-md border border-surface-container-lowest/20 text-surface-container-lowest font-semibold px-8 py-4 rounded-md hover:bg-surface-container-low/20 transition-all">
+              <a
+                href="#solutions"
+                className="inline-flex min-h-12 items-center justify-center rounded-md border border-surface-container-lowest/20 bg-surface-container-low/10 px-6 py-3.5 text-center text-sm font-semibold text-surface-container-lowest backdrop-blur-md transition-all hover:bg-surface-container-low/20 sm:px-8 sm:py-4 sm:text-base"
+              >
                 Как это работает
               </a>
             </div>
           </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }} 
-            animate={{ opacity: 1, scale: 1 }} 
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }} 
-            className="hidden md:block relative"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="relative mx-auto w-full max-w-md md:mx-0 md:max-w-none"
           >
-            <div className="glass-panel p-6 rounded-xl border border-white/10 shadow-2xl relative overflow-hidden">
+            <div className="glass-panel relative overflow-hidden rounded-xl border border-white/10 p-4 shadow-2xl sm:p-5 md:p-6">
               <div className="flex justify-between items-center mb-6 border-b border-outline-variant/10 pb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-tertiary-fixed">
@@ -159,23 +200,27 @@ export default function Home() {
       </section>
 
       {/* Problems & Solution Section */}
-      <section className="py-24 bg-surface px-8" id="solutions">
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.7, ease: "easeOut" }} 
-          className="container mx-auto"
+      <section className="scroll-mt-20 bg-surface px-4 py-14 sm:px-6 sm:py-20 md:px-8 md:py-24" id="solutions">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="container mx-auto max-w-[1400px]"
         >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-4 tracking-tight">Как это работает</h2>
-            <p className="text-secondary text-lg max-w-2xl mx-auto">Интеллектуальная оптимизация на каждом этапе: от приема заявки до завершения маршрута.</p>
+          <div className="mb-10 text-center sm:mb-16">
+            <h2 className="mb-3 text-2xl font-bold tracking-tight text-primary sm:text-3xl md:text-4xl">
+              Как это работает
+            </h2>
+            <p className="mx-auto max-w-2xl px-1 text-sm text-secondary sm:text-base md:text-lg">
+              Интеллектуальная оптимизация на каждом этапе: от приема заявки до завершения маршрута.
+            </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-0 rounded-xl overflow-hidden shadow-sm border border-surface-container-low">
-            <div className="bg-surface-container-highest p-12 flex flex-col justify-between">
+          <div className="grid gap-0 overflow-hidden rounded-xl border border-surface-container-low shadow-sm md:grid-cols-3">
+            <div className="flex flex-col justify-between bg-surface-container-highest p-6 sm:p-8 md:p-10 lg:p-12">
               <div>
-                <span className="material-symbols-outlined text-outline text-4xl mb-6">event_busy</span>
-                <h3 className="text-2xl font-bold text-on-surface mb-4">Ручное планирование</h3>
+                <span className="material-symbols-outlined mb-4 text-3xl text-outline sm:mb-6 sm:text-4xl">event_busy</span>
+                <h3 className="mb-3 text-xl font-bold text-on-surface sm:mb-4 sm:text-2xl">Ручное планирование</h3>
                 <p className="text-secondary leading-relaxed">
                   Традиционные методы приводят к задержкам до 40 минут на каждой заявке. Диспетчеры тратят ценное время на выбор техники, часто допуская ошибки в ETA.
                 </p>
@@ -185,10 +230,14 @@ export default function Home() {
                 <span className="text-xs font-bold text-outline opacity-50 px-2 py-1 border border-outline/20 rounded">ЭТАП 1</span>
               </div>
             </div>
-            <div className="bg-primary text-on-primary p-12 flex flex-col justify-between transform md:scale-105 shadow-2xl z-10 transition-transform hover:scale-110">
+            <div className="z-10 flex flex-col justify-between bg-primary p-6 text-on-primary shadow-2xl sm:p-8 md:scale-105 md:p-10 md:transition-transform lg:p-12 md:hover:scale-[1.02] lg:hover:scale-110">
               <div>
-                <span className="material-symbols-outlined text-tertiary-fixed text-4xl mb-6">precision_manufacturing</span>
-                <h3 className="text-2xl font-bold text-surface-container-lowest mb-4">Интеллектуальный подбор</h3>
+                <span className="material-symbols-outlined mb-4 text-3xl text-tertiary-fixed sm:mb-6 sm:text-4xl">
+                  precision_manufacturing
+                </span>
+                <h3 className="mb-3 text-xl font-bold text-surface-container-lowest sm:mb-4 sm:text-2xl">
+                  Интеллектуальный подбор
+                </h3>
                 <p className="text-primary-fixed opacity-90 leading-relaxed font-medium">
                   Алгоритм мгновенно анализирует весь доступный флот. Учитываются текущие координаты, тип спецтехники и приоритет заявки для автоматического назначения.
                 </p>
@@ -198,10 +247,10 @@ export default function Home() {
                 <span className="text-xs font-bold text-tertiary-fixed-dim px-2 py-1 border border-tertiary-fixed/30 rounded">ЭТАП 2</span>
               </div>
             </div>
-            <div className="bg-surface-container-highest p-12 flex flex-col justify-between">
+            <div className="flex flex-col justify-between bg-surface-container-highest p-6 sm:p-8 md:p-10 lg:p-12">
               <div>
-                <span className="material-symbols-outlined text-outline text-4xl mb-6">forklift</span>
-                <h3 className="text-2xl font-bold text-on-surface mb-4">Объединение заявок</h3>
+                <span className="material-symbols-outlined mb-4 text-3xl text-outline sm:mb-6 sm:text-4xl">forklift</span>
+                <h3 className="mb-3 text-xl font-bold text-on-surface sm:mb-4 sm:text-2xl">Объединение заявок</h3>
                 <p className="text-secondary leading-relaxed">
                   Система создает multi-stop маршруты, исключая холостые пробеги. Достигается максимальная загрузка флота за счет умного группирования задач.
                 </p>
@@ -216,35 +265,47 @@ export default function Home() {
       </section>
 
       {/* Key Features Section */}
-      <section className="py-24 bg-surface-container-lowest px-8" id="features">
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.7, ease: "easeOut" }} 
-          className="container mx-auto"
+      <section className="scroll-mt-20 bg-surface-container-lowest px-4 py-14 sm:px-6 sm:py-20 md:px-8 md:py-24" id="features">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="container mx-auto max-w-[1400px]"
         >
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div className="mb-10 flex flex-col gap-4 sm:mb-14 md:mb-16 md:flex-row md:items-end md:justify-between">
             <div className="max-w-xl">
-              <h2 className="text-4xl font-bold text-primary mb-4 tracking-tight">Технологический стек оптимизации</h2>
-              <p className="text-secondary text-lg">Мы объединили передовые разработки в области картографии и интернета вещей для создания единой экосистемы.</p>
+              <h2 className="mb-3 text-2xl font-bold tracking-tight text-primary sm:text-3xl md:mb-4 md:text-4xl">
+                Технологический стек оптимизации
+              </h2>
+              <p className="text-sm text-secondary sm:text-base md:text-lg">
+                Мы объединили передовые разработки в области картографии и интернета вещей для создания единой
+                экосистемы.
+              </p>
             </div>
-            <div className="text-right">
-              <a href="https://ayacom-production.up.railway.app/redoc" target="_blank" rel="noopener noreferrer" className="text-sm font-label text-primary font-bold hover:text-tertiary-fixed cursor-pointer transition-colors block">API Documentation →</a>
+            <div className="md:text-right">
+              <a
+                href="https://ayacom-production.up.railway.app/redoc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center font-label text-sm font-bold text-primary transition-colors hover:text-tertiary-fixed"
+              >
+                API Documentation →
+              </a>
             </div>
           </div>
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="group p-8 bg-surface border-b-4 border-transparent hover:border-tertiary-fixed hover:bg-surface-container-low transition-all duration-300 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-primary-container/10 flex items-center justify-center text-primary-container mb-6 group-hover:scale-110 transition-transform rounded-full">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 lg:gap-8">
+            <div className="group rounded-lg border-b-4 border-transparent bg-surface p-6 shadow-sm transition-all duration-300 hover:border-tertiary-fixed hover:bg-surface-container-low sm:p-7 md:p-8">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-primary-container/10 text-primary-container transition-transform group-hover:scale-110 md:mb-6">
                 <span className="material-symbols-outlined">map</span>
               </div>
-              <h4 className="text-lg font-bold text-primary mb-3">Дорожный граф</h4>
+              <h4 className="mb-3 text-lg font-bold text-primary">Дорожный граф</h4>
               <p className="text-sm text-secondary leading-relaxed">
                 Собственный граф дорог месторождений, включающий временные проезды и зимники, недоступные в обычных картах.
               </p>
             </div>
-            <div className="group p-8 bg-surface border-b-4 border-transparent hover:border-tertiary-fixed hover:bg-surface-container-low transition-all duration-300 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-primary-container/10 flex items-center justify-center text-primary-container mb-6 group-hover:scale-110 transition-transform rounded-full">
+            <div className="group rounded-lg border-b-4 border-transparent bg-surface p-6 shadow-sm transition-all duration-300 hover:border-tertiary-fixed hover:bg-surface-container-low sm:p-7 md:p-8">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-primary-container/10 text-primary-container transition-transform group-hover:scale-110 md:mb-6">
                 <span className="material-symbols-outlined">settings_input_antenna</span>
               </div>
               <h4 className="text-lg font-bold text-primary mb-3">Интеграция Wialon</h4>
@@ -252,8 +313,8 @@ export default function Home() {
                 Прямое соединение с телематическими терминалами. Сбор данных о топливе, скорости и оборотах двигателя в реальном времени.
               </p>
             </div>
-            <div className="group p-8 bg-surface border-b-4 border-transparent hover:border-tertiary-fixed hover:bg-surface-container-low transition-all duration-300 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-primary-container/10 flex items-center justify-center text-primary-container mb-6 group-hover:scale-110 transition-transform rounded-full">
+            <div className="group rounded-lg border-b-4 border-transparent bg-surface p-6 shadow-sm transition-all duration-300 hover:border-tertiary-fixed hover:bg-surface-container-low sm:p-7 md:p-8">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-primary-container/10 text-primary-container transition-transform group-hover:scale-110 md:mb-6">
                 <span className="material-symbols-outlined">monitoring</span>
               </div>
               <h4 className="text-lg font-bold text-primary mb-3">Аналитика и КПЭ</h4>
@@ -261,8 +322,8 @@ export default function Home() {
                 Наглядные дашборды для руководителей. Мониторинг эффективности каждого водителя и общего здоровья автопарка.
               </p>
             </div>
-            <div className="group p-8 bg-surface border-b-4 border-transparent hover:border-tertiary-fixed hover:bg-surface-container-low transition-all duration-300 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-primary-container/10 flex items-center justify-center text-primary-container mb-6 group-hover:scale-110 transition-transform rounded-full">
+            <div className="group rounded-lg border-b-4 border-transparent bg-surface p-6 shadow-sm transition-all duration-300 hover:border-tertiary-fixed hover:bg-surface-container-low sm:p-7 md:p-8">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-primary-container/10 text-primary-container transition-transform group-hover:scale-110 md:mb-6">
                 <span className="material-symbols-outlined">api</span>
               </div>
               <a href="https://ayacom-production.up.railway.app/redoc" target="_blank" rel="noopener noreferrer" className="hover:text-tertiary-fixed transition-colors">
@@ -277,123 +338,55 @@ export default function Home() {
       </section>
 
       {/* Metrics Section */}
-      <section className="py-20 bg-primary px-8 border-y border-primary-container/50" id="analytics">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }} 
-          whileInView={{ opacity: 1, scale: 1 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.6, ease: "easeOut" }} 
-          className="container mx-auto"
+      <section
+        className="scroll-mt-20 border-y border-primary-container/50 bg-primary px-4 py-14 sm:px-6 sm:py-16 md:px-8 md:py-20"
+        id="analytics"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="container mx-auto max-w-[1400px]"
         >
-          <div className="grid md:grid-cols-3 gap-12 text-center">
+          <div className="grid grid-cols-1 gap-10 text-center sm:grid-cols-3 sm:gap-8 md:gap-12">
             <div className="flex flex-col items-center">
-              <span className="text-5xl md:text-6xl font-bold text-tertiary-fixed mb-2 font-headline drop-shadow-lg">52+</span>
-              <p className="text-primary-fixed uppercase tracking-widest text-xs font-bold">Единиц спецтехники</p>
-              <div className="w-12 h-1 bg-tertiary-fixed/30 mt-6 rounded-full"></div>
+              <span className="mb-2 font-headline text-4xl font-bold text-tertiary-fixed drop-shadow-lg sm:text-5xl md:text-6xl">
+                52+
+              </span>
+              <p className="max-w-[12rem] text-[10px] font-bold uppercase leading-snug tracking-widest text-primary-fixed sm:text-xs">
+                Единиц спецтехники
+              </p>
+              <div className="mt-5 h-1 w-12 rounded-full bg-tertiary-fixed/30 sm:mt-6" />
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-5xl md:text-6xl font-bold text-tertiary-fixed mb-2 font-headline drop-shadow-lg">14.2%</span>
-              <p className="text-primary-fixed uppercase tracking-widest text-xs font-bold">Экономия топлива</p>
-              <div className="w-12 h-1 bg-tertiary-fixed/30 mt-6 rounded-full"></div>
+              <span className="mb-2 font-headline text-4xl font-bold text-tertiary-fixed drop-shadow-lg sm:text-5xl md:text-6xl">
+                14.2%
+              </span>
+              <p className="max-w-[12rem] text-[10px] font-bold uppercase leading-snug tracking-widest text-primary-fixed sm:text-xs">
+                Экономия топлива
+              </p>
+              <div className="mt-5 h-1 w-12 rounded-full bg-tertiary-fixed/30 sm:mt-6" />
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-5xl md:text-6xl font-bold text-tertiary-fixed mb-2 font-headline drop-shadow-lg">28 мин</span>
-              <p className="text-primary-fixed uppercase tracking-widest text-xs font-bold">Среднее время (ETA)</p>
-              <div className="w-12 h-1 bg-tertiary-fixed/30 mt-6 rounded-full"></div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="py-24 bg-surface px-8" id="contact">
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }} 
-          whileInView={{ opacity: 1, y: 0 }} 
-          viewport={{ once: true, margin: "-100px" }} 
-          transition={{ duration: 0.7, ease: "easeOut" }} 
-          className="container mx-auto max-w-5xl"
-        >
-          <div className="bg-surface-container-lowest rounded-2xl shadow-xl overflow-hidden grid md:grid-cols-2">
-            <div className="p-12 bg-surface-container-low flex flex-col justify-between">
-              <div>
-                <h2 className="text-3xl font-bold text-primary mb-6 leading-tight">Готовы оптимизировать свой автопарк?</h2>
-                <p className="text-secondary mb-8 leading-relaxed">Оставьте заявку на демонстрацию системы. Наши эксперты проведут аудит ваших текущих маршрутов и рассчитают потенциальную экономию.</p>
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4 text-primary">
-                    <span className="material-symbols-outlined text-primary-container">support_agent</span>
-                    <span className="text-sm font-medium">Техническая поддержка 24/7</span>
-                  </div>
-                  <div className="flex items-center gap-4 text-primary">
-                    <span className="material-symbols-outlined text-primary-container">speed</span>
-                    <span className="text-sm font-medium">Внедрение за 14 рабочих дней</span>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-12 rounded-xl overflow-hidden">
-                <img alt="Contact decoration" className="w-full h-auto scale-105" src="/contact-decoration.png" />
-              </div>
-            </div>
-            <div className="p-12">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Имя</label>
-                  <input 
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" 
-                    placeholder="Иван Иванов" 
-                    type="text" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Компания</label>
-                  <input 
-                    required
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" 
-                    placeholder="ООО Логистика-Плюс" 
-                    type="text" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Email</label>
-                  <input 
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-surface border-none focus:ring-2 focus:outline-none focus:ring-tertiary-fixed-dim rounded-md py-4 px-4 text-sm text-primary placeholder:text-secondary/50" 
-                    placeholder="ivan@company.ru" 
-                    type="email" 
-                  />
-                </div>
-                <button 
-                  disabled={status === "loading"}
-                  className="w-full bg-primary text-on-primary font-bold py-5 rounded-md hover:brightness-125 transition-all shadow-lg flex items-center justify-center gap-3 mt-4 active:scale-[0.98] disabled:opacity-50" 
-                  type="submit"
-                >
-                  {status === "loading" ? "Отправка..." : "Запросить демонстрацию"}
-                  <span className="material-symbols-outlined">send</span>
-                </button>
-                {message && (
-                  <p className={`text-xs text-center mt-4 ${status === "ok" ? "text-green-500" : "text-red-500"}`}>
-                    {message}
-                  </p>
-                )}
-                <p className="text-[10px] text-center text-secondary leading-relaxed mt-4">
-                  Нажимая кнопку, вы соглашаетесь на обработку персональных данных в соответствии с политикой конфиденциальности.
-                </p>
-              </form>
+            <div className="flex flex-col items-center sm:col-span-1">
+              <span className="mb-2 font-headline text-4xl font-bold text-tertiary-fixed drop-shadow-lg sm:text-5xl md:text-6xl">
+                28 мин
+              </span>
+              <p className="max-w-[12rem] text-[10px] font-bold uppercase leading-snug tracking-widest text-primary-fixed sm:text-xs">
+                Среднее время (ETA)
+              </p>
+              <div className="mt-5 h-1 w-12 rounded-full bg-tertiary-fixed/30 sm:mt-6" />
             </div>
           </div>
         </motion.div>
       </section>
 
       {/* Footer */}
-      <footer className="w-full py-12 bg-[#000000] dark:bg-[#000000] tonal-shift border-t border-[#002d5b]">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-12">
+      <footer
+        className="tonal-shift w-full border-t border-[#002d5b] bg-[#000000] pb-[max(2rem,env(safe-area-inset-bottom))] pt-10 dark:bg-[#000000] sm:pt-12"
+        style={{ paddingLeft: "max(1rem, env(safe-area-inset-left))", paddingRight: "max(1rem, env(safe-area-inset-right))" }}
+      >
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-4 sm:grid-cols-2 sm:px-6 md:grid-cols-4 md:gap-8 lg:px-8">
           <div>
             <span className="font-['JetBrains_Mono'] text-lg text-[#faf9fb] block mb-6 font-bold">IS UTO</span>
             <p className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60">
@@ -410,7 +403,7 @@ export default function Home() {
             <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="https://ayacom.vercel.app/support" target="_blank" rel="noopener noreferrer">Поддержка</a>
             <a className="font-['Inter'] text-xs uppercase tracking-wider text-[#faf9fb] opacity-60 hover:opacity-100 hover:text-[#e9c176] transition-all ease-in-out duration-200" href="https://ayacom-production.up.railway.app/redoc" target="_blank" rel="noopener noreferrer">API</a>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" id="contacts">
             <span className="font-['Inter'] text-xs font-bold text-[#e9c176] uppercase tracking-wider mb-2">Контакты</span>
             <p className="font-['Inter'] text-xs text-[#faf9fb] opacity-60">г. Астана, ул. Достык 12</p>
             <p className="font-['Inter'] text-xs text-[#faf9fb] opacity-60">+7 705 478 15 52</p>
